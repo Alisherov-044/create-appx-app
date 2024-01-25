@@ -7,11 +7,11 @@
         "type": "git",
         "url": "git@github.com:Alisherov-044/create-appx-app.git"
     },
-    "bin": "./index.js",
+    "bin": "./dist/index.js",
     "type": "module",
     "scripts": {
-        "build": "npm install",
-        "start": "node --experimental-specifier-resolution=node index.js"
+        "start": "node --experimental-specifier-resolution=node index.js",
+        "release": "ncc build ./index.js -o ./dist/ --minify --no-cache --no-source-map-register"
     },
     "keywords": [],
     "author": "Sadulla Alisherov",

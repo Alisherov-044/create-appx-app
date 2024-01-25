@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-const os = require("os");
-const fs = require("fs");
-const path = require("path");
-const pkg = require("picocolors");
-const prompts = require("prompts");
-const Commander = require("commander");
-const childProcess = require("child_process");
-const chalkAnimation = require("chalk-animation");
+import os from "os";
+import fs from "fs";
+import path from "path";
+import pkg from "picocolors";
+import prompts from "prompts";
+import Commander from "commander";
+import childProcess from "child_process";
+import chalkAnimation from "chalk-animation";
 
 const { red, green, gray, yellow } = pkg;
 
@@ -208,7 +208,7 @@ async function createAppxApp() {
     }
 
     const packageJson = {
-        name: [".", "./"].includes(name) ? __dirname : name,
+        name: [".", "./"].includes(name) ? path.dirname : name,
         version: "0.1.0",
         private: true,
         scripts: {

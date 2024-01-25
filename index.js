@@ -219,7 +219,7 @@ async function createAppxApp() {
     }
 
     const packageJson = {
-        name,
+        name: [".", "./"].includes(name) ? __dirname : name,
         version: "0.1.0",
         private: true,
         scripts: {
@@ -1194,21 +1194,13 @@ button {
 
     console.log(yellow("\n| Installing packages..."));
     if (packageManager === "npm") {
-        childProcess.execSync(`npm install`, {
-            cwd: [".", "./"].includes(name) ? "" : name,
-        });
+        childProcess.execSync(`npm install`, { cwd: name });
     } else if (packageManager === "yarn") {
-        childProcess.execSync(`yarn`, {
-            cwd: [".", "./"].includes(name) ? "" : name,
-        });
+        childProcess.execSync(`yarn`, { cwd: name });
     } else if (packageManager === "pnpm") {
-        childProcess.execSync(`pnpm install`, {
-            cwd: [".", "./"].includes(name) ? "" : name,
-        });
+        childProcess.execSync(`pnpm install`, { cwd: name });
     } else if (packageManager === "bun") {
-        childProcess.execSync(`bun install`, {
-            cwd: [".", "./"].includes(name) ? "" : name,
-        });
+        childProcess.execSync(`bun install`, { cwd: name });
     }
 }
 

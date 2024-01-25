@@ -3,6 +3,11 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Alisherov-044/create-appx-app.git"
+    },
+    "bin": "./index.js",
     "type": "module",
     "devDependencies": {
         "@testing-library/jest-dom": "^6.3.0",
@@ -22,7 +27,7 @@
         "dev": "node ."
     },
     "keywords": [],
-    "author": "",
+    "author": "Sadulla Alisherov",
     "license": "ISC",
     "dependencies": {
         "@emotion/react": "^11.11.3",

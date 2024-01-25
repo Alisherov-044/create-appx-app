@@ -3,11 +3,9 @@
 import os from "os";
 import fs from "fs";
 import path from "path";
-import figlet from "figlet";
 import pkg from "picocolors";
 import prompts from "prompts";
 import Commander from "commander";
-import { Spinner } from "cli-spinner";
 import childProcess from "child_process";
 import chalkAnimation from "chalk-animation";
 
@@ -189,11 +187,6 @@ const program = new Commander.Command("create-appx-app")
     )
     .allowUnknownOption()
     .parse(process.argv);
-
-const spinner = new Spinner({
-    text: yellow("Installing packages..."),
-    stream: process.stderr,
-});
 
 async function createAppxApp() {
     const {
@@ -693,8 +686,7 @@ async function createAppxApp() {
         );
     }
 
-    console.log("\n");
-    spinner.start();
+    console.log(yellow("\n| Installing packages..."));
     if (packageManager === "npm") {
         childProcess.execSync(`npm install`, { cwd: name });
     } else if (packageManager === "yarn") {
@@ -704,17 +696,6 @@ async function createAppxApp() {
     } else if (packageManager === "bun") {
         childProcess.execSync(`bun install`, { cwd: name });
     }
-}
-
-async function welcome() {
-    const rainbowTitle = chalkAnimation.rainbow(
-        figlet.textSync("create-appx-app", {
-            horizontalLayout: "default",
-        })
-    );
-
-    await sleep();
-    rainbowTitle.stop();
 }
 
 async function projectName() {
@@ -984,8 +965,6 @@ async function importAlias() {
 }
 
 async function done() {
-    spinner.stop();
-
     const glitchMessage = chalkAnimation.glitch(
         `
         Project created successfully!
@@ -997,8 +976,6 @@ async function done() {
     glitchMessage.stop();
     console.clear();
 }
-
-await welcome();
 
 if (typeof program.args[0] === "string") {
     if (fs.existsSync(defaultPreferences.name)) {

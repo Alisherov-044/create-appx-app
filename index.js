@@ -51,12 +51,11 @@ const defaultPreferences = {
 const userPreferences = { ...defaultPreferences };
 
 const program = new Commander.Command("create-appx-app")
-    .version("1.0.0")
-    .arguments("<project-directory")
-    .usage(`${green("<project-directory>")} [options]`)
+    .arguments("<project-path>")
+    .usage(`${green("<project-path>")} [options]`)
     .action((name) => {
         if (typeof name === "string") {
-            defaultPreferences.name = name;
+            userPreferences.name = name;
         }
     })
     .option(
@@ -980,7 +979,10 @@ async function done() {
 }
 
 if (typeof program.args[0] === "string") {
-    if (fs.existsSync(defaultPreferences.name)) {
+    if (
+        ![".", "./"].includes(program.args[0]) &&
+        fs.existsSync(defaultPreferences.name)
+    ) {
         console.error(red("\n Error: Directory already exists!"));
         process.exit(1);
     }

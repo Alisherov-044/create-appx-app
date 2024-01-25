@@ -1194,13 +1194,21 @@ button {
 
     console.log(yellow("\n| Installing packages..."));
     if (packageManager === "npm") {
-        childProcess.execSync(`npm install`, { cwd: name });
+        childProcess.execSync(`npm install`, {
+            cwd: [".", "./"].includes(name) ? "" : name,
+        });
     } else if (packageManager === "yarn") {
-        childProcess.execSync(`yarn`, { cwd: name });
+        childProcess.execSync(`yarn`, {
+            cwd: [".", "./"].includes(name) ? "" : name,
+        });
     } else if (packageManager === "pnpm") {
-        childProcess.execSync(`pnpm install`, { cwd: name });
+        childProcess.execSync(`pnpm install`, {
+            cwd: [".", "./"].includes(name) ? "" : name,
+        });
     } else if (packageManager === "bun") {
-        childProcess.execSync(`bun install`, { cwd: name });
+        childProcess.execSync(`bun install`, {
+            cwd: [".", "./"].includes(name) ? "" : name,
+        });
     }
 }
 

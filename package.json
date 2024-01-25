@@ -1,6 +1,6 @@
 {
     "name": "create-appx-app",
-    "version": "2.0.0",
+    "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "repository": {
@@ -16,7 +16,8 @@
         "prompts": "2.4.2"
     },
     "scripts": {
-        "dev": "node ."
+        "build": "npm install",
+        "run": "node ."
     },
     "keywords": [],
     "author": "Sadulla Alisherov",

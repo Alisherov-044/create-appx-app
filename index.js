@@ -298,19 +298,111 @@ async function createAppxApp() {
 
     fs.writeFileSync(
         `${name}/.prettierrc`,
-        fs.readFileSync("./examples/.prettierrc")
+        `{
+    "semi": true,
+    "singleQuote": false,
+    "bracketSpacing": true,
+    "tabWidth": 4
+}
+        ` + os.EOL
     );
     fs.writeFileSync(
         `${name}/.gitignore`,
-        fs.readFileSync("./examples/.gitignore")
+        `# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+
+/coverage
+
+# next.js
+
+/.next/
+/out/
+
+# production
+
+/build
+
+# misc
+
+.DS_Store
+\*.pem
+
+# debug
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log\*
+
+# local env files
+
+.env\*.local
+.env
+
+# vercel
+
+.vercel
+
+# typescript
+
+\*.tsbuildinfo
+next-env.d.ts
+    ` + os.EOL
     );
     fs.writeFileSync(
         `${name}/README.md`,
-        fs.readFileSync("./examples/README.md")
+        `This is a [Next.js](https://nextjs.org/) project bootstrapped with [\`create-appx-app\`](https://github.com/Alisherov-044/create-appx-app).
+
+## Getting Started
+
+First, run the development server:
+
+\`\`\`bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+\`\`\`
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying \`app/(home)/page.tsx\`. The page auto-updates as you edit the file.
+
+This project uses [\`next/font\`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+        ` + os.EOL
     );
     fs.writeFileSync(
         `${name}/next.config.mjs`,
-        fs.readFileSync("./examples/next.config.mjs")
+        `/** @type {import('next').NextConfig} */
+const nextConfig = {};
+        
+export default nextConfig;
+        ` + os.EOL
     );
 
     if (language.value === "typescript") {
@@ -324,7 +416,12 @@ async function createAppxApp() {
 
         fs.writeFileSync(
             `${name}/next-env.d.ts`,
-            fs.readFileSync("./examples/next-env.d.ts")
+            `/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.
+        ` + os.EOL
         );
         fs.writeFileSync(
             `${name}/tsconfig.json`,
@@ -346,7 +443,10 @@ async function createAppxApp() {
 
         fs.writeFileSync(
             `${name}/.eslintrc.json`,
-            fs.readFileSync("./examples/.eslintrc.json")
+            `{
+    "extends": "next/core-web-vitals"
+}
+            ` + os.EOL
         );
     }
 
@@ -361,12 +461,36 @@ async function createAppxApp() {
         if (language === "typescript") {
             fs.writeFileSync(
                 `${name}/tailwind.config.ts`,
-                fs.readFileSync("./examples/tailwind.config.ts")
+                `import type { Config } from "tailwindcss";
+
+const config: Config = {
+    content: [
+        "./**/*.{js,ts,jsx,tsx,mdx,html}",
+        "./src/**/*.{js,ts,jsx,tsx,mdx,html}",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+};
+export default config;
+                ` + os.EOL
             );
         } else if (language === "javascript") {
             fs.writeFileSync(
                 `${name}/tailwind.config.js`,
-                fs.readFileSync("./examples/tailwind.config.js")
+                `/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: [
+        "./**/*.{js,ts,jsx,tsx,mdx,html}",
+        "./src/**/*.{js,ts,jsx,tsx,mdx,html}",
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+};
+                ` + os.EOL
             );
         }
     } else if (style.value === "scss") {
@@ -388,12 +512,27 @@ async function createAppxApp() {
 
         fs.writeFileSync(
             `${name}/jest.config.js`,
-            fs.readFileSync("./examples/jest.config.js")
+            `const nextJest = require("next/jest");
+
+/** @type {import('jest').Config} */
+const createJestConfig = nextJest({
+    dir: "./",
+});
+
+const config = {
+    coverageProvider: "v8",
+    testEnvironment: "jsdom",
+    setupFilesAfterEnv: ["./jest.setup.js"],
+};
+
+module.exports = createJestConfig(config);
+            ` + os.EOL
         );
 
         fs.writeFileSync(
             `${name}/jest.setup.js`,
-            fs.readFileSync("./examples/jest.setup.js")
+            `import "@testing-library/jest-dom";
+            ` + os.EOL
         );
     }
 
@@ -406,7 +545,16 @@ async function createAppxApp() {
 
         fs.writeFileSync(
             `${name}/cypress.config.js`,
-            fs.readFileSync("./examples/cypress.config.js")
+            `const { defineConfig } = require('cypress')
+ 
+module.exports = defineConfig({
+  component: {
+    devServer: {
+      framework: 'next',
+      bundler: 'webpack',
+    },
+  },
+})` + os.EOL
         );
     }
 
@@ -466,35 +614,71 @@ async function createAppxApp() {
             ),
             ""
         );
-        fs.writeFileSync(
-            `${name}/${isSrc}app/layout.${getExtensionJSX()}`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/app/layout.${getExtensionJSX()}`
-            )
-        );
-        fs.writeFileSync(
-            `${name}/${isSrc}app/providers.${getExtensionJSX()}`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/app/providers.${getExtensionJSX()}`
-            )
-        );
-        fs.writeFileSync(
-            `${name}/${isSrc}app/(home)/page.${getExtensionJSX()}`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/app/(home)/page.${getExtensionJSX()}`
-            )
-        );
-
         if (isTS) {
             fs.writeFileSync(
+                `${name}/${isSrc}app/layout.${getExtensionJSX()}`,
+                `import "@/styles/main.scss";
+
+import { Providers } from "./providers";
+import { Footer, Header } from "@/components/layout";
+
+import type { Metadata } from "next";
+import type { RootLayoutProps } from "./types";
+
+export const metadata: Metadata = {
+    title: "Create Appx App",
+    description: "Generated by create appx app",
+};
+
+export default function RootLayout({ children }: RootLayoutProps) {
+    return (
+        <html lang="en">
+            <body>
+                <Providers>
+                    <Header />
+                    {children}
+                    <Footer />
+                </Providers>
+            </body>
+        </html>
+    );
+}
+                ` + os.EOL
+            );
+            fs.writeFileSync(
+                `${name}/${isSrc}app/providers.${getExtensionJSX()}`,
+                `"use client";
+import { ProvidersProps } from "./types";
+
+export function Providers({ children }: ProvidersProps) {
+    return children;
+}
+                ` + os.EOL
+            );
+            fs.writeFileSync(
+                `${name}/${isSrc}app/(home)/page.${getExtensionJSX()}`,
+                `import "./styles.scss";
+
+export default function HomePage() {
+    return <main>HomePage</main>;
+}
+                ` + os.EOL
+            );
+
+            fs.writeFileSync(
                 `${name}/${isSrc}app/types.ts`,
-                fs.readFileSync(`./templates/app/ts/app/types.ts`)
+                `import type { ReactNode } from "react";
+
+type RootLayoutProps = {
+    children: ReactNode;
+};
+
+type ProvidersProps = {
+    children: ReactNode;
+};
+
+export type { RootLayoutProps, ProvidersProps };
+                ` + os.EOL
             );
         }
     }
@@ -537,22 +721,35 @@ async function createAppxApp() {
         if (folder === "layout") {
             const layoutFolders = ["Header", "Footer"];
 
+            const layoutContents = {
+                Header: `import "./styles.scss";
+
+export function Header() {
+    return <header>Header</header>;
+}
+                `,
+                Footer: `import "./styles.scss";
+
+export function Footer() {
+    return <footer>Footer</footer>;
+}
+                `,
+            };
+
             layoutFolders.forEach((layoutFolder) => {
                 fs.mkdirSync(
                     `${name}/${isSrc}components/${folder}/${layoutFolder}`
                 );
 
-                fs.writeFileSync(
-                    path.join(
-                        `${name}/${isSrc}components/${folder}/${layoutFolder}`,
-                        `index.${getExtensionJSX()}`
-                    ),
-                    fs.readFileSync(
-                        `./templates/app/${
-                            isTS ? "ts" : "js"
-                        }/components/layout/${layoutFolder}/index.${getExtensionJSX()}`
-                    )
-                );
+                if (isTS) {
+                    fs.writeFileSync(
+                        path.join(
+                            `${name}/${isSrc}components/${folder}/${layoutFolder}`,
+                            `index.${getExtensionJSX()}`
+                        ),
+                        layoutContents[layoutFolder] + os.EOL
+                    );
+                }
 
                 if (style.value === "scss") {
                     fs.writeFileSync(
@@ -560,9 +757,8 @@ async function createAppxApp() {
                             `${name}/${isSrc}components/${folder}/${layoutFolder}`,
                             `styles.scss`
                         ),
-                        fs.readFileSync(
-                            `./templates/app/ts/components/layout/${layoutFolder}/styles.scss`
-                        )
+                        `@import "mixins", "variables";
+                        ` + os.EOL
                     );
                 }
             });
@@ -587,6 +783,126 @@ async function createAppxApp() {
                 "Section",
             ];
 
+            const uiComponentContents = {
+                AppxGroupSignature: `import "./styles.scss";
+
+import { Icons } from "@/components/ui";
+
+export function AppxGroupSignature() {
+    return (
+        <div className="appx-group__signature">
+            <Icons.appxIcon />
+
+            <h4 className="appx-group__signature-title">
+                Developed and designed by Appx Group
+            </h4>
+        </div>
+    );
+}
+                `,
+                Button: `"use client";
+import "./styles.scss";
+
+import clsx from "clsx";
+
+import type { ButtonProps } from "./types";
+
+export function Button({ children, className, variant, ...rest }: ButtonProps) {
+    return (
+        <button className={clsx("button", variant, className)} {...rest}>
+            {children}
+        </button>
+    );
+}
+                `,
+                Icons: `import type { IconProps } from "./types";
+
+export const Icons = {};
+                `,
+                Section: `import "./styles.scss";
+
+import type { SectionProps } from "./types";
+
+export function Section({
+    children,
+    title,
+    description,
+    className,
+    ...rest
+}: SectionProps) {
+    return (
+        <section className={className} {...rest}>
+            <div className="container">
+                <div className="section__title-wrapper">
+                    <h1 className="section__title">{title}</h1>
+                    <p className="section__description">{description}</p>
+                </div>
+            </div>
+            {children}
+        </section>
+    );
+}
+                `,
+            };
+
+            const uiComponentStyles = {
+                AppxGroupSignature: `@import "mixins", "variables";
+
+.appx-group__signature {
+    @include flex(center, space-between);
+    gap: 12px;
+    position: relative;
+    width: 252px;
+    padding: 12px 24px;
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    background: rgba(193, 195, 226, 0.16);
+
+    &-title {
+        color: $white;
+        font-family: var(--font-inter);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 130%;
+    }
+}
+                `,
+                Button: `@import "mixins", "variables";
+                `,
+                Section: `@import "mixins", "variables";
+                `,
+            };
+
+            const uiComponentTypes = {
+                Button: `import type { ComponentProps, ReactNode } from "react";
+
+type ButtonProps = ComponentProps<"button"> & {
+    children: ReactNode;
+    className?: string;
+    variant?: "primary" | "secondary";
+};
+
+export type { ButtonProps };
+                `,
+                Icons: `import type { ComponentProps } from "react";
+
+type IconProps = ComponentProps<"svg">;
+
+export type { IconProps };
+                `,
+                Section: `import type { ComponentProps, ReactNode } from "react";
+
+type SectionProps = ComponentProps<"section"> & {
+    children: ReactNode;
+    className?: string;
+    title?: string;
+    description?: string;
+};
+
+export type { SectionProps };
+                `,
+            };
+
             uiComponentFolders.forEach((uiComponentFolder) => {
                 fs.mkdirSync(
                     `${name}/${isSrc}components/${folder}/${uiComponentFolder}`
@@ -596,29 +912,20 @@ async function createAppxApp() {
                         `${name}/${isSrc}components/${folder}/${uiComponentFolder}`,
                         `index.${getExtensionJSX()}`
                     ),
-                    fs.readFileSync(
-                        `./templates/app/${
-                            isTS ? "ts" : "js"
-                        }/components/ui/${uiComponentFolder}/index.${getExtensionJSX()}`
-                    )
+                    uiComponentContents[uiComponentFolder] + os.EOL
                 );
 
-                const stylesPath = `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/components/ui/${uiComponentFolder}/styles.scss`;
-                const typesPath = `./templates/app/ts/components/ui/${uiComponentFolder}/types.ts`;
-
-                if (fs.existsSync(stylesPath) && style.value === "scss") {
+                if (uiComponentFolder !== "Icons") {
                     fs.writeFileSync(
                         `${name}/${isSrc}components/${folder}/${uiComponentFolder}/styles.scss`,
-                        fs.readFileSync(stylesPath)
+                        uiComponentStyles[uiComponentFolder] + os.EOL
                     );
                 }
 
-                if (fs.existsSync(typesPath) && isTS) {
+                if (uiComponentFolder !== "AppxGroupSignature" && isTS) {
                     fs.writeFileSync(
                         `${name}/${isSrc}components/${folder}/${uiComponentFolder}/types.ts`,
-                        fs.readFileSync(typesPath)
+                        uiComponentTypes[uiComponentFolder] + os.EOL
                     );
                 }
             });
@@ -640,50 +947,248 @@ async function createAppxApp() {
     if (style.value === "css") {
         fs.writeFileSync(
             `${name}/${isSrc}styles/main.css`,
-            fs.readFileSync(
-                `./templates/app/${isTS ? "ts" : "js"}/styles/css/main.css`
-            )
+            `* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+
+    main {
+        flex: 1 1 auto;
+    }
+}
+
+a {
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol,
+li {
+    font: inherit;
+    color: inherit;
+    list-style: none;
+}
+
+input,
+button,
+textarea {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    max-width: unset;
+    margin-inline: auto;
+    padding-inline: unset;
+}
+            ` + os.EOL
         );
     } else if (style.value === "scss") {
         fs.mkdirSync(`${name}/${isSrc}styles/globals`);
         fs.writeFileSync(
             `${name}/${isSrc}styles/globals/_mixins.scss`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/styles/scss/globals/_mixins.scss`
-            )
+            `@mixin flex($align: flex-start, $justify: flex-start) {
+    display: flex;
+    align-items: $align;
+    justify-content: $justify;
+}
+
+$maxWidth: 1920;
+$maxWidthContainer: 1440;
+@mixin adaptive-value($property, $startSize, $minSize) {
+    $addSize: $startSize - $minSize;
+
+    #{$property}: $startSize + px;
+    @media (max-width:#{$maxWidthContainer + px}) {
+        #{$property}: calc(
+            #{$minSize + px} + #{$addSize} *
+                ((100vw - 320px) / #{$maxWidthContainer - 320})
+        );
+    }
+}
+
+@mixin any-hover() {
+    @media only screen and (any-hover: hover) {
+        &:hover {
+            @content;
+        }
+    }
+}
+
+@mixin media($breakpoint, $query: max-width) {
+    @media only screen and ($query: #{$breakpoint}px) {
+        @content;
+    }
+}
+            ` + os.EOL
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/globals/_normalizers.scss`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/styles/scss/globals/_normalizers.scss`
-            )
+            `* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    @include flex(flex-start, space-between);
+    flex-direction: column;
+    position: relative;
+
+    & > main {
+        flex: 1 1 auto;
+    }
+}
+
+a {
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol,
+li {
+    font: inherit;
+    color: inherit;
+    list-style: none;
+}
+
+input,
+button,
+textarea {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    max-width: unset;
+    margin-inline: auto;
+    padding-inline: unset;
+}
+            ` + os.EOL
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/globals/_variables.scss`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/styles/scss/globals/_variables.scss`
-            )
+            `// colors
+            ` + os.EOL
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/main.scss`,
-            fs.readFileSync(
-                `./templates/app/${isTS ? "ts" : "js"}/styles/scss/main.scss`
-            )
+            `@import "./globals/variables", "./globals/mixins", "./globals/normalizers";
+            ` + os.EOL
         );
     } else if (style.value === "tailwindcss") {
         fs.writeFileSync(
             `${name}/${isSrc}styles/main.css`,
-            fs.readFileSync(
-                `./templates/app/${
-                    isTS ? "ts" : "js"
-                }/styles/tailwindcss/main.css`
-            )
+            `@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    position: relative;
+
+    main {
+        flex: 1 1 auto;
+    }
+}
+
+a {
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+ol,
+li {
+    font: inherit;
+    color: inherit;
+    list-style: none;
+}
+
+input,
+button,
+textarea {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: 100%;
+    max-width: unset;
+    margin-inline: auto;
+    padding-inline: unset;
+}
+            ` + os.EOL
         );
     }
 

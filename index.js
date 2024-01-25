@@ -395,7 +395,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.` + os.EOL
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.` +
+            os.EOL
     );
     fs.writeFileSync(
         `${name}/next.config.mjs`,
@@ -420,7 +421,8 @@ export default nextConfig;` + os.EOL
 /// <reference types="next/image-types/global" />
 
 // NOTE: This file should not be edited
-// see https://nextjs.org/docs/basic-features/typescript for more information.` + os.EOL
+// see https://nextjs.org/docs/basic-features/typescript for more information.` +
+                os.EOL
         );
         fs.writeFileSync(
             `${name}/tsconfig.json`,
@@ -656,7 +658,10 @@ export default function HomePage() {
     return <main>HomePage</main>;
 }` + os.EOL
             );
-
+            fs.writeFileSync(
+                `${name}/${isSrc}app/(home)/styles.scss`,
+                `@import "mixins", "variables";` + os.EOL
+            );
             fs.writeFileSync(
                 `${name}/${isSrc}app/types.ts`,
                 `import type { ReactNode } from "react";
@@ -1092,7 +1097,8 @@ button {
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/main.scss`,
-            `@import "./globals/variables", "./globals/mixins", "./globals/normalizers";` + os.EOL
+            `@import "./globals/variables", "./globals/mixins", "./globals/normalizers";` +
+                os.EOL
         );
     } else if (style.value === "tailwindcss") {
         fs.writeFileSync(

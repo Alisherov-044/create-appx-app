@@ -222,7 +222,9 @@ async function createAppxApp() {
             react: "^18",
             "react-dom": "^18",
         },
-        devDependencies: {},
+        devDependencies: {
+            clsx: "1.1.1",
+        },
     };
 
     const jsConfigJson = {

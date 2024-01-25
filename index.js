@@ -283,6 +283,20 @@ async function createAppxApp() {
             : "tsx";
     };
 
+    if (style.value === "scss") {
+        jsConfigJson.compilerOptions.paths = {
+            ...jsConfigJson.compilerOptions.paths,
+            mixins: ["./src/styles/globals/_mixins.scss"],
+            variables: ["./src/styles/globals/_variables.scss"],
+        };
+
+        tsConfigJson.compilerOptions.paths = {
+            ...tsConfigJson.compilerOptions.paths,
+            mixins: ["./src/styles/globals/_mixins.scss"],
+            variables: ["./src/styles/globals/_variables.scss"],
+        };
+    }
+
     childProcess.execSync(`git init -b main`, { cwd: name });
 
     fs.writeFileSync(
@@ -342,8 +356,7 @@ yarn-error.log\*
 # typescript
 
 \*.tsbuildinfo
-next-env.d.ts
-    ` + os.EOL
+next-env.d.ts` + os.EOL
     );
     fs.writeFileSync(
         `${name}/README.md`,
@@ -382,16 +395,14 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-        ` + os.EOL
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.` + os.EOL
     );
     fs.writeFileSync(
         `${name}/next.config.mjs`,
         `/** @type {import('next').NextConfig} */
 const nextConfig = {};
         
-export default nextConfig;
-        ` + os.EOL
+export default nextConfig;` + os.EOL
     );
 
     if (language.value === "typescript") {
@@ -409,8 +420,7 @@ export default nextConfig;
 /// <reference types="next/image-types/global" />
 
 // NOTE: This file should not be edited
-// see https://nextjs.org/docs/basic-features/typescript for more information.
-        ` + os.EOL
+// see https://nextjs.org/docs/basic-features/typescript for more information.` + os.EOL
         );
         fs.writeFileSync(
             `${name}/tsconfig.json`,
@@ -434,8 +444,7 @@ export default nextConfig;
             `${name}/.eslintrc.json`,
             `{
     "extends": "next/core-web-vitals"
-}
-            ` + os.EOL
+}` + os.EOL
         );
     }
 
@@ -462,8 +471,7 @@ const config: Config = {
     },
     plugins: [],
 };
-export default config;
-                ` + os.EOL
+export default config;` + os.EOL
             );
         } else if (language === "javascript") {
             fs.writeFileSync(
@@ -514,14 +522,12 @@ const config = {
     setupFilesAfterEnv: ["./jest.setup.js"],
 };
 
-module.exports = createJestConfig(config);
-            ` + os.EOL
+module.exports = createJestConfig(config);` + os.EOL
         );
 
         fs.writeFileSync(
             `${name}/jest.setup.js`,
-            `import "@testing-library/jest-dom";
-            ` + os.EOL
+            `import "@testing-library/jest-dom";` + os.EOL
         );
     }
 
@@ -631,8 +637,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </body>
         </html>
     );
-}
-                ` + os.EOL
+}` + os.EOL
             );
             fs.writeFileSync(
                 `${name}/${isSrc}app/providers.${getExtensionJSX()}`,
@@ -641,8 +646,7 @@ import { ProvidersProps } from "./types";
 
 export function Providers({ children }: ProvidersProps) {
     return children;
-}
-                ` + os.EOL
+}` + os.EOL
             );
             fs.writeFileSync(
                 `${name}/${isSrc}app/(home)/page.${getExtensionJSX()}`,
@@ -650,8 +654,7 @@ export function Providers({ children }: ProvidersProps) {
 
 export default function HomePage() {
     return <main>HomePage</main>;
-}
-                ` + os.EOL
+}` + os.EOL
             );
 
             fs.writeFileSync(
@@ -666,8 +669,7 @@ type ProvidersProps = {
     children: ReactNode;
 };
 
-export type { RootLayoutProps, ProvidersProps };
-                ` + os.EOL
+export type { RootLayoutProps, ProvidersProps };` + os.EOL
             );
         }
     }
@@ -715,14 +717,12 @@ export type { RootLayoutProps, ProvidersProps };
 
 export function Header() {
     return <header>Header</header>;
-}
-                `,
+}`,
                 Footer: `import "./styles.scss";
 
 export function Footer() {
     return <footer>Footer</footer>;
-}
-                `,
+}`,
             };
 
             layoutFolders.forEach((layoutFolder) => {
@@ -746,8 +746,7 @@ export function Footer() {
                             `${name}/${isSrc}components/${folder}/${layoutFolder}`,
                             `styles.scss`
                         ),
-                        `@import "mixins", "variables";
-                        ` + os.EOL
+                        `@import "mixins", "variables";` + os.EOL
                     );
                 }
             });
@@ -787,8 +786,7 @@ export function AppxGroupSignature() {
             </h4>
         </div>
     );
-}
-                `,
+}`,
                 Button: `"use client";
 import "./styles.scss";
 
@@ -802,12 +800,10 @@ export function Button({ children, className, variant, ...rest }: ButtonProps) {
             {children}
         </button>
     );
-}
-                `,
+}`,
                 Icons: `import type { IconProps } from "./types";
 
-export const Icons = {};
-                `,
+export const Icons = {};`,
                 Section: `import "./styles.scss";
 
 import type { SectionProps } from "./types";
@@ -830,8 +826,7 @@ export function Section({
             {children}
         </section>
     );
-}
-                `,
+}`,
             };
 
             const uiComponentStyles = {
@@ -854,12 +849,9 @@ export function Section({
         font-weight: 400;
         line-height: 130%;
     }
-}
-                `,
-                Button: `@import "mixins", "variables";
-                `,
-                Section: `@import "mixins", "variables";
-                `,
+}`,
+                Button: `@import "mixins", "variables";`,
+                Section: `@import "mixins", "variables";`,
             };
 
             const uiComponentTypes = {
@@ -871,14 +863,12 @@ type ButtonProps = ComponentProps<"button"> & {
     variant?: "primary" | "secondary";
 };
 
-export type { ButtonProps };
-                `,
+export type { ButtonProps };`,
                 Icons: `import type { ComponentProps } from "react";
 
 type IconProps = ComponentProps<"svg">;
 
-export type { IconProps };
-                `,
+export type { IconProps };`,
                 Section: `import type { ComponentProps, ReactNode } from "react";
 
 type SectionProps = ComponentProps<"section"> & {
@@ -888,8 +878,7 @@ type SectionProps = ComponentProps<"section"> & {
     description?: string;
 };
 
-export type { SectionProps };
-                `,
+export type { SectionProps };`,
             };
 
             uiComponentFolders.forEach((uiComponentFolder) => {
@@ -995,8 +984,7 @@ button {
     max-width: unset;
     margin-inline: auto;
     padding-inline: unset;
-}
-            ` + os.EOL
+}` + os.EOL
         );
     } else if (style.value === "scss") {
         fs.mkdirSync(`${name}/${isSrc}styles/globals`);
@@ -1034,8 +1022,7 @@ $maxWidthContainer: 1440;
     @media only screen and ($query: #{$breakpoint}px) {
         @content;
     }
-}
-            ` + os.EOL
+}` + os.EOL
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/globals/_normalizers.scss`,
@@ -1097,18 +1084,15 @@ button {
     max-width: unset;
     margin-inline: auto;
     padding-inline: unset;
-}
-            ` + os.EOL
+}` + os.EOL
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/globals/_variables.scss`,
-            `// colors
-            ` + os.EOL
+            `// colors` + os.EOL
         );
         fs.writeFileSync(
             `${name}/${isSrc}styles/main.scss`,
-            `@import "./globals/variables", "./globals/mixins", "./globals/normalizers";
-            ` + os.EOL
+            `@import "./globals/variables", "./globals/mixins", "./globals/normalizers";` + os.EOL
         );
     } else if (style.value === "tailwindcss") {
         fs.writeFileSync(
@@ -1176,8 +1160,7 @@ button {
     max-width: unset;
     margin-inline: auto;
     padding-inline: unset;
-}
-            ` + os.EOL
+}` + os.EOL
         );
     }
 

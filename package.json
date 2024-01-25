@@ -9,18 +9,17 @@
     },
     "bin": "./index.js",
     "type": "module",
-    "devDependencies": {
-        "chalk-animation": "2.0.3",
-        "commander": "2.20.0",
-        "picocolors": "1.0.0",
-        "prompts": "2.4.2"
-    },
     "scripts": {
         "build": "npm install",
-        "run": "node ."
+        "start": "node --experimental-specifier-resolution=node index.js"
     },
     "keywords": [],
     "author": "Sadulla Alisherov",
     "license": "ISC",
-    "dependencies": {}
+    "dependencies": {
+        "chalk-animation": "2.0.3",
+        "commander": "2.20.0",
+        "picocolors": "1.0.0",
+        "prompts": "2.4.2"
+    }
 }

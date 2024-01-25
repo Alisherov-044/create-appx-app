@@ -208,7 +208,7 @@ async function createAppxApp() {
     }
 
     const packageJson = {
-        name: [".", "./"].includes(name) ? path.dirname : name,
+        name: [".", "./"].includes(name) ? "appx-app" : name,
         version: "0.1.0",
         private: true,
         scripts: {
@@ -222,9 +222,7 @@ async function createAppxApp() {
             react: "^18",
             "react-dom": "^18",
         },
-        devDependencies: {
-            clsx: "1.1.1",
-        },
+        devDependencies: {},
     };
 
     const jsConfigJson = {
@@ -500,6 +498,11 @@ module.exports = {
             sass: "^1.70.0",
         };
     }
+
+    packageJson.devDependencies = {
+        ...packageJson.devDependencies,
+        clsx: "^1.1.1",
+    };
 
     if (unit) {
         packageJson.scripts.test = "jest --watchAll";

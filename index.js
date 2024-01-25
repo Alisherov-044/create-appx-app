@@ -206,11 +206,13 @@ async function createAppxApp() {
 
     // TODO: create page router scheme
 
-    fs.mkdir(`${name}`, { recursive: true }, (err) => {
-        if (err) {
-            console.error(red(err));
-        }
-    });
+    if (![".", "./"].includes(name)) {
+        fs.mkdir(`${name}`, { recursive: true }, (err) => {
+            if (err) {
+                console.error(red(err));
+            }
+        });
+    }
 
     if (fs.existsSync(`${name}/package.json`)) {
         console.error(red("\n Error: package.json already exists!"));

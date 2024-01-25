@@ -11,17 +11,6 @@ const chalkAnimation = require("chalk-animation");
 
 const { red, green, gray, yellow } = pkg;
 
-export const SRC_DIR_NAMES = [
-    "app",
-    "data",
-    "utils",
-    "pages",
-    "hooks",
-    "styles",
-    "context",
-    "components",
-];
-
 const sleep = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 
 const defaultPreferences = {

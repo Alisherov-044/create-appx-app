@@ -7,17 +7,28 @@
         "type": "git",
         "url": "git@github.com:Alisherov-044/create-appx-app.git"
     },
-    "bin": "./index.js",
+    "bin": {
+        "create-appx-app": "./index.js"
+    },
+    "files": [
+        "./templates",
+        "./examples"
+    ],
     "type": "module",
     "scripts": {
         "start": "node --experimental-specifier-resolution=node index.js"
     },
-    "keywords": [],
+    "keywords": [
+        "react",
+        "next.js",
+        "create-appx-app"
+    ],
     "author": "Sadulla Alisherov",
     "license": "ISC",
     "dependencies": {
         "chalk-animation": "2.0.3",
         "commander": "2.20.0",
+        "fs-extra": "^11.2.0",
         "picocolors": "1.0.0",
         "prompts": "2.4.2"
     }

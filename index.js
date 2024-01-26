@@ -6,8 +6,12 @@ import path from "path";
 import pkg from "picocolors";
 import prompts from "prompts";
 import Commander from "commander";
+import { fileURLToPath } from "url";
 import childProcess from "child_process";
 import chalkAnimation from "chalk-animation";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const { red, green, gray, yellow } = pkg;
 
@@ -301,13 +305,7 @@ async function createAppxApp() {
 
     fs.writeFileSync(
         `${name}/.prettierrc`,
-        `{
-    "semi": true,
-    "singleQuote": false,
-    "bracketSpacing": true,
-    "tabWidth": 4
-}
-        ` + os.EOL
+        fs.readFileSync(`./examples/.prettierrc`)
     );
     fs.writeFileSync(
         `${name}/.gitignore`,
